@@ -1,2 +1,2 @@
-Encuentra aquí el proyecto desplegado: [https://github.com/cribastena/PORTFOLIO.git]
- (https://github.com/cribastena/PORTFOLIO.git)
+Encuentra mi proyecto desplegado en :[https://loregp23.github.io/Loreky-Portfolio-Template/]
+(https://loregp23.github.io/Loreky-Portfolio-Template/)
