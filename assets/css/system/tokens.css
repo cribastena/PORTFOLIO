@@ -21,8 +21,8 @@
 	--space-2xl: clamp(3rem, 2rem + 5vw, 6rem);
 
 	/* Colors */
-	--color-bg: #000000;
-	--color-bg-alt: #000000;
+	--color-bg: #38512d;
+	--color-bg-alt: #1e3216;
 	--color-medio: #f6f6f6;
 	--color-text: #f6f6f6;
 	--color-text-muted: #2d2d2d;
