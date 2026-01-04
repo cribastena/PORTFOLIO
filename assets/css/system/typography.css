@@ -1,0 +1,46 @@
+html,
+body {
+  font-family: var(--font-sans);
+}
+
+h1 {
+  font-family: "field-gothic-xxcondensed", sans-serif;
+  font-size: 9rem;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  letter-spacing: -0.02em;
+
+}
+
+h2 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  font-family: var(--font-sans);
+}
+
+h3 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-sans);
+}
+
+p {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-md);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  letter-spacing: -0.03em;
+  font-weight: 70;
+}
+
+.hero-logo {
+  display: block;
+  text-align: center;
+  font-family: "field-gothic-xxcondensed", sans-serif;
+  font-size: 22vw; 
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}

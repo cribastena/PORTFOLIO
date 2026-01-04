@@ -1,0 +1,45 @@
+.nav {
+  background: var(--color-bg-alt);
+  padding: 0.8rem var(--space-md)
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-family: "field-gothic-xxcondensed", sans-serif;
+  font-weight: 400; 
+  font-size: 2.2rem; 
+  color: var(--color-text);
+}
+
+.nav-logo:hover {
+  color: var(--color-accent); /* tu rosa definido en tokens.css */
+}
+
+.nav-links {
+
+  font-family: "field-gothic-xxcondensed", sans-serif;
+  font-weight: 400; 
+  font-size: 2.2rem; 
+  display: flex;
+  gap: var(--space-md);
+}
+
+.nav-links a {
+  color: var(--color-text);
+  font-size: 2rem
+}
+
+.nav-links a:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 640px) {
+  .nav-links {
+    display: none;
+  }
+}

@@ -1,0 +1,112 @@
+.about {
+	background: var(--color-bg-alt);
+}
+
+.about-grid {
+	display: grid;
+	gap: var(--space-xl);
+}
+
+@media (min-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+.about-text p {
+	margin-bottom: 0;
+}
+
+.about-text {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 48%;
+  min-width: 0 auto;
+}
+@media (max-width: 768px) {
+  .about-text {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-text {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skills-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--space-md);
+}
+
+.skill-card {
+	background: var(--color-bg);
+	padding: var(--space-md);
+	border-radius: var(--radius-md);
+	text-align: center;
+}
+
+.skill-icon {
+	font-size: var(--text-2xl);
+	display: block;
+	margin-bottom: var(--space-sm);
+	transition: transform 0.3s ease;
+}
+
+.skill-icon:hover svg {
+  transform: scale(1.25);
+}
+
+
+.skills-carousel {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* centra el track dentro del contenedor */
+  margin-top: var(--space-xl);
+}
+
+.skills-track {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 85%;       /* ahora sí puedes usar 90% */
+  max-width: 85vw;
+}
+
+.skill-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skill-icon svg {
+  width: 3rem;
+  height: 3rem;
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .skills-track {
+    gap: 2rem;
+  }
+  .skill-icon svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-track {
+    gap: 1rem;
+    justify-content: center;
+  }
+  .skill-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

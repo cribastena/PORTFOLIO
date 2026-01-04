@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  padding-inline: 2rem; 
+  margin: 0 auto;
+}
+
+.section {
+  padding: clamp(4rem, 3rem + 5vw, 8rem) 2rem;
+}
+
+.grid-2 {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 640px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}

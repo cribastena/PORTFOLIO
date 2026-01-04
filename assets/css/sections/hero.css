@@ -1,0 +1,76 @@
+.hero {
+	position: relative;
+	min-height: clamp(50vh, 90vh, 100vh);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	overflow: hidden;
+}
+
+.hero-bg {
+	position: absolute;
+	inset: 0;
+	background: var(--color-bg);
+	z-index: -1;
+}
+
+@supports (animation-timeline: scroll()) {
+	.parallax-bg {
+		animation: parallaxShift linear both;
+		animation-timeline: scroll(root);
+		animation-range: 0% 100%;
+	}
+	@keyframes parallaxShift {
+		from {
+			transform: translateY(0) scale(1);
+		}
+		to {
+			transform: translateY(-15%) scale(1.1);
+		}
+	}
+}
+
+@supports not (animation-timeline: scroll()) {
+	.parallax-bg {
+		background-attachment: fixed;
+	}
+}
+
+.hero-content {
+	position: absolute;
+	z-index: 1;
+}
+
+.hero-logo {
+	color: var(--color-medio);
+}
+
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: rotate(45deg) translateY(0);
+	}
+	40% {
+		transform: rotate(45deg) translateY(10px);
+	}
+	60% {
+		transform: rotate(45deg) translateY(5px);
+	}
+}
+
+.hero-text-group {
+  display: inline-block; /* permite posicionamiento absoluto relativo a grupo */
+}
+
+.hero-label {
+  font-family: "Medusa", sans-serif;
+  font-size: 5vw;
+  margin: 0;
+  color: var(--color-text);
+  text-align: center;
+  line-height: 0;
+}
