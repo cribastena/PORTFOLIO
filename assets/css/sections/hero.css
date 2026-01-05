@@ -9,11 +9,19 @@
 }
 
 .hero-bg {
-	position: absolute;
-	inset: 0;
-	background: var(--color-bg);
-	z-index: -1;
+  position: absolute;
+  inset: 0;
+  background-image: url(https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-05%20a%20las%2020.46.20.png);
+  background-size: cover; /* ensure it fills the hero */
+  background-position: center 20%; /* raise the visible area a bit */
+	/* use numeric opacity (0-1). 50% was invalid and could be ignored */
+	opacity: 1.0;
+	/* keep background behind content but inside the hero stacking context */
+	z-index: 0;
+	background-repeat: no-repeat;
+	pointer-events: none;
 }
+
 
 @supports (animation-timeline: scroll()) {
 	.parallax-bg {
@@ -67,7 +75,7 @@
 }
 
 .hero-label {
-  font-family: "Medusa", sans-serif;
+  font-family: sans-serif;
   font-size: 5vw;
   margin: 0;
   color: var(--color-text);
