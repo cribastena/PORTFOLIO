@@ -90,11 +90,28 @@
   transition: transform 0.3s ease;
 }
 
+/* Ensure img icons get the same sizing and hover behaviour as inline SVGs */
+.skill-icon img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.skill-icon:hover img {
+  transform: scale(1.25);
+}
+
 @media (max-width: 768px) {
   .skills-track {
     gap: 2rem;
   }
   .skill-icon svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .skill-icon img {
     width: 2rem;
     height: 2rem;
   }
@@ -109,4 +126,81 @@
     width: 1.5rem;
     height: 1.5rem;
   }
+
+  .skill-icon img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+/* Increase the 'Fotografía' (Cinema 4D) icon by 15% and center it horizontally within its cell */
+.skills-track .skill-icon[title="Fotografía"] img {
+  /* increased to clean rounded sizes per user request */
+  width: 5rem;
+  height: 5rem;
+  display: block;       /* allow margin:auto centering */
+  margin: 0 auto;      /* center horizontally within the .skill-icon */
+  align-self: center;  /* ensure vertical alignment matches other items */
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .skills-track .skill-icon[title="Fotografía"] img {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-track .skill-icon[title="Fotografía"] img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+/* Increase the 'Ilustraciones' (Procreate) icon by 30% and keep it aligned */
+.skills-track .skill-icon[title="Ilustraciones"] img {
+  /* increased further per user request */
+  width: 6rem;
+  height: 6rem;
+  display: block;
+  margin: 0 auto;
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  .skills-track .skill-icon[title="Ilustraciones"] img {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-track .skill-icon[title="Ilustraciones"] img {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* Procreate specific sizing: desktop 60px, tablet 48px, mobile 40px */
+.skills-track .skill-icon[title="PROCREATE"] img {
+  width: 60px;
+  height: 60px;
+  display: block;
+  margin: 0 auto;
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  .skills-track .skill-icon[title="PROCREATE"] img {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-track .skill-icon[title="PROCREATE"] img {
+    width: 40px;
+    height: 40px;
+  }
+}
 }

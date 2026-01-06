@@ -1,6 +1,6 @@
 .contact {
 	/* background image (striped) provided by user */
-	background-image: url("https://ik.imagekit.io/7zyxg26dj/FONDO%20RALLAS.jpg");
+	background-image: url("https://ik.imagekit.io/7zyxg26dj/FONDO%20BLANCO.jpg");
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -9,6 +9,15 @@
 	text-align: center;
 	/* ensure content remains readable */
 	position: relative;
+
+	/* reduce vertical space but give extra breathing room at the top */
+	padding-top: var(--space-lg);
+	padding-bottom: var(--space-md);
+
+	/* center content vertically and horizontally */
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /* optional overlay to improve contrast */
@@ -28,17 +37,48 @@
 	z-index: 1; /* sit above overlay */
 }
 
+/* Ensure the container fills the flex axis so centering works predictably */
+.contact > .container {
+    width: 100%;
+}
+
 .contact-content p {
 	font-size: var(--text-lg);
 	color: var(--color-text);
-	margin-bottom: var(--space-lg);
+	margin-bottom: var(--space-md);
+}
+
+/* Nudge the content slightly upward on wider screens so it reads centered but a bit higher */
+@media (min-width: 768px) {
+	.contact .contact-content {
+		transform: translateY(-22%); /* increased upward nudge (user requested higher) */
+	}
+}
+
+@media (min-width: 1200px) {
+	.contact .contact-content {
+		transform: translateY(-22%); /* very large screens: raise further */
+	}
+}
+
+/* Move the section title up to match the content position */
+@media (min-width: 768px) {
+	.contact .section-title {
+		transform: translateY(-12%);
+	}
+}
+
+@media (min-width: 1200px) {
+	.contact .section-title {
+		transform: translateY(-32%);
+	}
 }
 
 .social-links {
 	display: flex;
 	justify-content: center;
-	gap: var(--space-lg);
-	margin-top: var(--space-lg);
+	gap: var(--space-md);
+	margin-top: var(--space-md);
 }
 
 .social-links a {
