@@ -1,6 +1,17 @@
 .nav {
-  background: var(--color-bg-alt);
-  padding: 0.8rem var(--space-md)
+  /* slightly translucent background so content beneath is visible */
+  background: rgba(246,246,246,0.75); /* slightly more translucent */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  /* nav vertical padding restored to original */
+  /* reduce nav height slightly while keeping inner elements vertically centered */
+  padding: 0.9rem var(--space-lg);
+  /* keep the nav visible while scrolling */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* subtle separation from content when overlapping */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .nav-container {
@@ -9,33 +20,58 @@
   align-items: center;
 }
 
+/* reduce nav overall width on large screens and center it */
+/* (restored: nav container will use full width by default; no max-width centering) */
+
 .nav-logo {
-  font-family: "field-gothic-xxcondensed", sans-serif;
-  font-weight: 400; 
-  font-size: 2.2rem; 
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.54rem; /* 30% smaller (2.2rem * 0.7) */
   color: var(--color-text);
 }
 
 .nav-logo:hover {
-  color: var(--color-accent); /* tu rosa definido en tokens.css */
+  color: var(--color-accent); 
 }
 
 .nav-links {
-
-  font-family: "field-gothic-xxcondensed", sans-serif;
-  font-weight: 400; 
-  font-size: 2.2rem; 
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.54rem; /* 30% smaller */
   display: flex;
   gap: var(--space-md);
 }
 
 .nav-links a {
   color: var(--color-text);
-  font-size: 2rem
+  font-size: 1.4rem; /* 30% smaller (2rem * 0.7) */
+  font-family: var(--font-sans);
+  font-weight: 700;
 }
 
 .nav-links a:hover {
   color: var(--color-accent);
+}
+
+/* logo image inside the nav - scale to the available nav height */
+.nav-logo-img {
+  height: 3rem; /* increased per user request */
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .nav-logo-img {
+    height: 2.6rem; /* keep logo size on mobile */
+  }
+  /* slightly less vertical padding on small screens */
+  .nav {
+    padding: 0.7rem var(--space-md);
+  }
 }
 
 @media (max-width: 640px) {

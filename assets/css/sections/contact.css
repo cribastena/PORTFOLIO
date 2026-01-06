@@ -1,6 +1,31 @@
 .contact {
-	background: var(--color-bg-alt);
+	/* background image (striped) provided by user */
+	background-image: url("https://ik.imagekit.io/7zyxg26dj/FONDO%20RALLAS.jpg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	/* fallback color if image fails to load */
+	background-color: var(--color-bg-alt);
 	text-align: center;
+	/* ensure content remains readable */
+	position: relative;
+}
+
+/* optional overlay to improve contrast */
+.contact::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: rgba(255,255,255,0.6); /* light overlay — adjust alpha to taste */
+	pointer-events: none;
+	z-index: 0;
+}
+
+.contact > .container,
+.contact .contact-content,
+.contact .social-links {
+	position: relative;
+	z-index: 1; /* sit above overlay */
 }
 
 .contact-content p {

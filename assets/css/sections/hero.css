@@ -54,6 +54,14 @@
 	color: var(--color-medio);
 }
 
+/* Ensure hero logo and related text use the Berylium heading font */
+.hero-logo,
+.hero-label,
+.hero-text-group,
+.hero-logo-container {
+  font-family: var(--font-headings, var(--font-sans));
+}
+
 @keyframes bounce {
 	0%,
 	20%,
@@ -75,10 +83,9 @@
 }
 
 .hero-label {
-  font-family: sans-serif;
   font-size: 5vw;
   margin: 0;
-  color: var(--color-text);
+	color: #ffffff; /* make the word 'canco' white */
   text-align: center;
   line-height: 0;
 }

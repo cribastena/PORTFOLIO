@@ -3,6 +3,53 @@
 	gap: var(--space-lg);
 }
 
+/* Background for the projects section */
+.projects {
+	position: relative; /* establish stacking context for overlay */
+		background-image: url("https://ik.imagekit.io/7zyxg26dj/cryon%20bg.jpg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	/* fallback color */
+	background-color: var(--color-bg-alt);
+}
+
+/* Center the section title inside the projects section */
+.projects .section-title {
+	text-align: center;
+	width: 100%;
+	margin-inline: 0;
+}
+
+/* Nudge the title more on larger screens and ensure it's centered */
+@media (min-width: 768px) {
+	.projects > .container > .section-title {
+		transform: translateY(-20px);
+		display: block; /* keep transform from affecting layout flow too much */
+		text-align: center;
+		margin-bottom: var(--space-lg); /* ensure a comfortable gap from the grid */
+	}
+}
+
+.projects::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	/* lighter dark overlay for better visibility of the background */
+	background: rgba(0,0,0,0.12);
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* ensure inner content sits above the overlay */
+.projects > .container,
+.projects .projects-grid,
+.projects .project-card,
+.projects .project-content {
+	position: relative;
+	z-index: 1;
+}
+
 @media (min-width: 640px) {
 	.projects-grid {
 		grid-template-columns: repeat(2, 1fr);

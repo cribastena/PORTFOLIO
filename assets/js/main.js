@@ -388,7 +388,8 @@ while (totalWidth < window.innerWidth * 2) {
 let pos = 0;
 let lastTime = null;
 const baseSpeed = 1;
-const hoverSpeed = 0.3;
+/* Keep the same speed when hovering so the animation does not slow down */
+const hoverSpeed = baseSpeed;
 
 function animate(time) {
   if (!lastTime) lastTime = time;

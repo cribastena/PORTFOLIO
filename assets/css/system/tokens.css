@@ -1,4 +1,15 @@
+@font-face {
+	font-family: "Berylium Rg";
+	/* external URL provided by user */
+	src: url("https://ik.imagekit.io/7zyxg26dj/Berylium%20Rg.otf") format("opentype");
+	font-weight: 400 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 :root {
+	/* variable for headings */
+	--font-headings: "Berylium Rg", var(--font-sans);
 	/* Typographic scale */
 	--text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
 	--text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
@@ -21,7 +32,7 @@
 	--space-2xl: clamp(3rem, 2rem + 5vw, 6rem);
 
 	/* Colors */
-	--color-bg: #38512d;
+	--color-bg: #506d43;
 	--color-bg-alt: #f6f6f6;
 	--color-medio: #f6f6f6;
 	--color-text: #1e3216;
