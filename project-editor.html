@@ -14,10 +14,10 @@
     .editor .section-title { text-align: center; }
     .upload-area { border: 2px dashed #ccc; padding: 2rem; text-align: center; border-radius: 8px; }
     .upload-area.dragover { border-color: #888; background: rgba(0,0,0,0.02); }
-    /* Grid of 3 columns x 5 rows for image slots */
+    /* Grid of 4 columns x 5 rows for image slots (20 slots) */
     .previews {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       /* allow each row to size based on the image's intrinsic height */
       grid-auto-rows: auto;
       gap: 1rem;
@@ -35,6 +35,7 @@
       color: #888;
     }
   .preview-slot.empty { border: 2px dashed rgba(0,0,0,0.06); min-height: 100px; }
+    .preview-slot.loading { opacity: 0.7; }
   /* make images responsive and keep natural aspect ratio so the grid adapts to image height */
   .preview-slot img { width: 100%; height: auto; display: block; }
   .preview-slot .placeholder { font-size: 2rem; color: #bbb; }
@@ -79,9 +80,9 @@
   const uploadArea = document.getElementById('uploadArea');
   const previews = document.getElementById('previews');
 
-    // Create 15 empty slots inside .previews on load
+    // Create 20 empty slots inside .previews on load
     (function createSlots(){
-      for(let i=0;i<15;i++){
+      for(let i=0;i<20;i++){
         const slot = document.createElement('div');
         slot.className = 'preview-slot empty';
         slot.dataset.slotIndex = i;
@@ -90,36 +91,78 @@
       }
     })();
 
-    function addFiles(files){
-      Array.from(files).forEach(file => {
-        if (!file.type.startsWith('image/')) return;
-        // find first empty slot
-        const slot = Array.from(previews.querySelectorAll('.preview-slot.empty'))[0];
-        if(!slot) return; // no free slots
-        const reader = new FileReader();
-        const img = document.createElement('img');
-        const remove = document.createElement('div');
-        remove.className = 'remove'; remove.textContent = '×';
-        remove.title = 'Remove';
-        remove.addEventListener('click', () => {
-          slot.classList.add('empty');
-          slot.innerHTML = '<span class="placeholder">+</span>';
-        });
-        reader.onload = e => { img.src = e.target.result; };
-        reader.readAsDataURL(file);
+    // helper to populate a slot from a remote URL (used to prefill project examples)
+    function fillSlotWithURL(url){
+      const slot = Array.from(previews.querySelectorAll('.preview-slot.empty'))[0];
+      if(!slot) return;
+      // reserve the slot immediately so subsequent calls don't pick the same one
+      slot.classList.remove('empty');
+      slot.classList.add('loading');
+      slot.innerHTML = '<span class="placeholder">…</span>';
+      const img = document.createElement('img');
+      const remove = document.createElement('div');
+      remove.className = 'remove'; remove.textContent = '×';
+      remove.title = 'Remove';
+      remove.addEventListener('click', () => {
+        slot.classList.add('empty');
+        slot.classList.remove('loading');
+        slot.innerHTML = '<span class="placeholder">+</span>';
+      });
+      img.onload = () => {
         slot.innerHTML = '';
         slot.appendChild(remove);
         slot.appendChild(img);
-        slot.classList.remove('empty');
-      });
+        slot.classList.remove('loading');
+      };
+      img.onerror = () => {
+        // indicate failed load
+        slot.innerHTML = '<span class="placeholder">⚠</span>';
+        slot.classList.remove('loading');
+      };
+      img.src = url;
     }
 
-    uploadArea.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => addFiles(e.target.files));
+    // NOTE: removed the previous addFiles(fileList) behavior.
+    // Instead use addFromUrls(urlArray) to populate slots from remote URLs.
+    function addFromUrls(urls){
+      if(!Array.isArray(urls)) return;
+      urls.forEach(url => {
+        if(!url) return;
+        fillSlotWithURL(url);
+      });
+    }
+    // expose helper for console usage or external wiring
+    window.addFromUrls = addFromUrls;
 
+    // remove file-based handlers (we use URL population instead)
     uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
     uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
-    uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('dragover'); addFiles(e.dataTransfer.files); });
+
+    // if this editor is opened for posters, prefill with the user's poster URLs
+    if(project === 'posters-covers'){
+      addFromUrls([
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4681.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4682.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3400.PNG'
+        , 'https://ik.imagekit.io/7zyxg26dj/IMG_2828.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4109.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/ultima%20propuestaCR1.JPEG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2926.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3586.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2307.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2297.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2318.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2855.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0357.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.54.00.png',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4685.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.57.29.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.57.56.png',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2511.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4377%202.PNG', 
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4094%202.PNG',
+      ]);
+    }
 
   // previews can be removed individually via each preview's × button
   </script>
