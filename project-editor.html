@@ -6,8 +6,11 @@
   <title>Project editor</title>
   <link rel="stylesheet" href="./assets/css/main.css">
   <style>
-    /* Ensure editor page has a white background (override site-wide background) */
-    body { background: #ffffff; }
+   /* Ensure editor page has a white background (override site-wide background)
+     Set both html and body to white and ensure body covers the viewport so the
+     site's green root background is not visible at the bottom of the page. */
+   html, body { background: #ffffff; }
+   body { min-height: 100vh; }
   .editor { padding: 1rem 0.5rem; max-width: 1000px; margin: 0 auto; }
     .editor h1 { margin-bottom: 1rem; }
     /* center section titles on the editor page but keep the same font-size/height */
@@ -119,7 +122,9 @@
       transition: none !important;
       animation: none !important;
     }
-    .modal img { max-width: 88vw; max-height: 68vh; width: auto; height: auto; border-radius:6px }
+  .modal img { max-width: 88vw; max-height: 68vh; width: auto; height: auto; border-radius:6px }
+  /* When we clone the preview into the modal, ensure cloned images follow the same constraints */
+  .modal .modal-media img { max-width: 88vw; max-height: 68vh; width: auto; height: auto; border-radius:6px }
     .modal .modal-actions { display:flex; gap:0.5rem; justify-content:center; width:100% }
     .modal .btn { min-width: 7rem }
     /* Remove shadow and interactive transforms on the modal's Close button, but keep
@@ -161,14 +166,14 @@
     </div>
 
     <div class="previews" id="previews">
-      <!-- 15 pre-built slots (3 columns x 5 rows). Slots are created by JS on load. -->
+      <!-- pre-built slots are created by JS on load. For the 3d project we only create 4 slots. -->
     </div>
 
     <!-- Modal for enlarged image preview -->
     <div id="image-modal" class="modal-overlay" hidden aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-label">
-        <h3 id="modal-label" style="margin:0; font-size:1rem">Imagen</h3>
-        <img id="modal-image" src="" alt="Enlarged preview" />
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Image preview">
+  <!-- media container: we'll clone the clicked preview image into this node for instant render -->
+  <div id="modal-media" class="modal-media" aria-hidden="true"></div>
         <div class="modal-actions">
           <button id="modal-close-btn" class="btn btn-primary"><h3 style="margin:0; font-size:1rem; font-weight:600;">Close</h3></button>
         </div>
@@ -183,13 +188,24 @@
   // show the project slug as a lowercase, site-styled section title
   document.getElementById('project-title').textContent = project.replace(/[-]/g, ' ').toLowerCase();
 
+    // Add a project-specific class to the editor container so we can target
+    // per-project layout tweaks (for example: make the 3d grid a 2x2).
+    const editorEl = document.querySelector('.editor');
+    if(editorEl){
+      // sanitize project to a safe class name (replace non-word chars with '-')
+      const safe = project.replace(/[^\w-]/g, '-');
+      editorEl.classList.add('project-' + safe);
+    }
+
   const fileInput = document.getElementById('fileInput');
   const uploadArea = document.getElementById('uploadArea');
   const previews = document.getElementById('previews');
 
-    // Create 20 empty slots inside .previews on load
+    // Create a configurable number of empty slots inside .previews on load.
+    // For the 3d project we only need 4 slots; other projects keep a larger default.
     (function createSlots(){
-      for(let i=0;i<20;i++){
+      const slotCount = (project === '3d') ? 4 : 20;
+      for(let i=0;i<slotCount;i++){
         const slot = document.createElement('div');
         slot.className = 'preview-slot empty';
         slot.dataset.slotIndex = i;
@@ -206,7 +222,10 @@
       slot.classList.remove('empty');
       slot.classList.add('loading');
       slot.innerHTML = '<span class="placeholder">…</span>';
-      const img = document.createElement('img');
+  // create either an <img> or a <video> depending on the URL
+  const urlPath = url.split('?')[0].toLowerCase();
+  const isVideo = /\.(webm|mp4|mov)$/i.test(urlPath);
+  const mediaEl = isVideo ? document.createElement('video') : document.createElement('img');
       const remove = document.createElement('div');
       remove.className = 'remove'; remove.textContent = '×';
       remove.title = 'Remove';
@@ -215,23 +234,54 @@
         slot.classList.remove('loading');
         slot.innerHTML = '<span class="placeholder">+</span>';
       });
-      img.onload = () => {
-        slot.innerHTML = '';
-        slot.appendChild(remove);
-        // make image interactive: clickable and keyboard accessible
-        img.style.cursor = 'pointer';
-        img.tabIndex = 0;
-        img.addEventListener('click', () => openImageModal(img));
-        img.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openImageModal(img); } });
-        slot.appendChild(img);
-        slot.classList.remove('loading');
-      };
-      img.onerror = () => {
-        // indicate failed load
-        slot.innerHTML = '<span class="placeholder">⚠</span>';
-        slot.classList.remove('loading');
-      };
-      img.src = url;
+      if(isVideo){
+        // configure video preview: autoplay muted loop for instant, lightweight preview
+        mediaEl.muted = true;
+        mediaEl.loop = true;
+        mediaEl.playsInline = true;
+        mediaEl.autoplay = true;
+        mediaEl.preload = 'metadata';
+        mediaEl.style.width = '100%';
+        mediaEl.style.height = 'auto';
+        // when the video has enough data to play, insert it
+        mediaEl.addEventListener('loadeddata', () => {
+          slot.innerHTML = '';
+          slot.appendChild(remove);
+          // make video interactive: clickable and keyboard accessible
+          mediaEl.style.cursor = 'pointer';
+          mediaEl.tabIndex = 0;
+          mediaEl.addEventListener('click', () => openImageModal(mediaEl));
+          mediaEl.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openImageModal(mediaEl); } });
+          slot.appendChild(mediaEl);
+          slot.classList.remove('loading');
+          // try to play (some browsers require play() after user gesture; muted autoplay usually works)
+          const p = mediaEl.play(); if(p && p.catch) p.catch(() => {/* ignore autoplay rejection */});
+        });
+        mediaEl.onerror = () => {
+          slot.innerHTML = '<span class="placeholder">⚠</span>';
+          slot.classList.remove('loading');
+        };
+        mediaEl.src = url;
+      } else {
+        const img = mediaEl;
+        img.onload = () => {
+          slot.innerHTML = '';
+          slot.appendChild(remove);
+          // make image interactive: clickable and keyboard accessible
+          img.style.cursor = 'pointer';
+          img.tabIndex = 0;
+          img.addEventListener('click', () => openImageModal(img));
+          img.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openImageModal(img); } });
+          slot.appendChild(img);
+          slot.classList.remove('loading');
+        };
+        img.onerror = () => {
+          // indicate failed load
+          slot.innerHTML = '<span class="placeholder">⚠</span>';
+          slot.classList.remove('loading');
+        };
+        img.src = url;
+      }
     }
 
     // NOTE: removed the previous addFiles(fileList) behavior.
@@ -276,15 +326,46 @@
       ]);
     }
 
+    // if this editor is opened for 3d, prefill with the user's 3d image URLs
+    if(project === '3d'){
+      addFromUrls([
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6464%202.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6463%202.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/output%20(1).webm',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6462%202.JPG',
+      ]);
+    }
+
   // previews can be removed individually via each preview's × button
 
   /* ---------- modal: open/close logic ---------- */
   const imageModal = document.getElementById('image-modal');
-  const modalImage = document.getElementById('modal-image');
+  const modalMedia = document.getElementById('modal-media');
   const modalCloseBtn = document.getElementById('modal-close-btn');
+  let _lastFocusedOpener = null;
 
   function openImageModal(imgEl){
-    modalImage.src = imgEl.src || imgEl.getAttribute('src');
+    // remember opener for focus restoration
+    try{ _lastFocusedOpener = document.activeElement; }catch(e){ _lastFocusedOpener = null; }
+    // Clear any previous content and clone the clicked preview element into the modal.
+    modalMedia.innerHTML = '';
+    const clone = imgEl.cloneNode(true);
+    // remove interactive attributes we don't need in the modal
+    clone.removeAttribute('tabindex');
+    clone.style.maxWidth = '88vw';
+    clone.style.maxHeight = '68vh';
+    clone.style.width = 'auto';
+    clone.style.height = 'auto';
+    // if this is a video element, ensure it plays/loops in the modal
+    if(clone.tagName && clone.tagName.toLowerCase() === 'video'){
+      clone.muted = true;
+      clone.loop = true;
+      clone.playsInline = true;
+      clone.autoplay = true;
+      // try to play; swallow promise rejection
+      const p = clone.play(); if(p && p.catch) p.catch(() => {});
+    }
+    modalMedia.appendChild(clone);
     imageModal.hidden = false;
     imageModal.setAttribute('aria-hidden','false');
     // trap scroll
@@ -294,17 +375,43 @@
   }
 
   function closeImageModal(){
-    // clear image first to avoid any rendering/decoding delay, then hide overlay
-    modalImage.src = '';
+    // if there's a video playing in the modal, pause it and release the src
+    const v = modalMedia.querySelector('video');
+    if(v){ try{ v.pause(); v.removeAttribute('src'); }catch(e){} }
+    // remove cloned media immediately, then hide overlay
+    modalMedia.innerHTML = '';
     imageModal.hidden = true;
     imageModal.setAttribute('aria-hidden','true');
     document.body.style.overflow = '';
+    // restore focus to the element that opened the modal, if available
+    try{ if(_lastFocusedOpener && typeof _lastFocusedOpener.focus === 'function') _lastFocusedOpener.focus(); }catch(e){}
   }
 
   modalCloseBtn.addEventListener('click', closeImageModal);
   // NOTE: intentionally do NOT close the modal via Escape or other global shortcuts.
   // The user requested the modal must be closed only by clicking the "Go back" button
   // inside the modal, so we do not attach an Escape key handler here.
+
+  // Delegated click/keyboard handler: ensure any image/video inside previews opens
+  // the modal for the 3d project even if individual listeners weren't attached.
+  previews.addEventListener('click', (e) => {
+    // only apply this delegated opener for the 3d project
+    if(!editorEl || !editorEl.classList.contains('project-3d')) return;
+    const media = e.target.closest('img, video');
+    if(media && previews.contains(media)){
+      openImageModal(media);
+    }
+  });
+  previews.addEventListener('keydown', (e) => {
+    if(!editorEl || !editorEl.classList.contains('project-3d')) return;
+    if(e.key === 'Enter' || e.key === ' '){
+      const media = e.target.closest('img, video');
+      if(media && previews.contains(media)){
+        e.preventDefault();
+        openImageModal(media);
+      }
+    }
+  });
   </script>
 </body>
 </html>
