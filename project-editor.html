@@ -336,6 +336,32 @@
       ]);
     }
 
+    // if this editor is opened for illustrations, prefill with the user's images
+    if(project === 'illustrations'){
+      addFromUrls([
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0494.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2251.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4465.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_9739.heic',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2256.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3585.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4576.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6554.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6561.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6278.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6275.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0211.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2675.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0170.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6553.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4979%202.heic',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2502.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2806.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4995.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3795.jpg'
+      ]);
+    }
+
   // previews can be removed individually via each preview's × button
 
   /* ---------- modal: open/close logic ---------- */
@@ -397,7 +423,12 @@
   previews.addEventListener('click', (e) => {
     // only apply this delegated opener for the 3d project
     if(!editorEl || !editorEl.classList.contains('project-3d')) return;
-    const media = e.target.closest('img, video');
+    // prefer direct media target, otherwise find media inside the clicked slot
+    let media = e.target.closest('img, video');
+    if(!media){
+      const slot = e.target.closest('.preview-slot');
+      if(slot) media = slot.querySelector('img, video');
+    }
     if(media && previews.contains(media)){
       openImageModal(media);
     }
@@ -405,7 +436,11 @@
   previews.addEventListener('keydown', (e) => {
     if(!editorEl || !editorEl.classList.contains('project-3d')) return;
     if(e.key === 'Enter' || e.key === ' '){
-      const media = e.target.closest('img, video');
+      let media = e.target.closest('img, video');
+      if(!media){
+        const slot = e.target.closest('.preview-slot');
+        if(slot) media = slot.querySelector('img, video');
+      }
       if(media && previews.contains(media)){
         e.preventDefault();
         openImageModal(media);
