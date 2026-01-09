@@ -13,12 +13,13 @@
    html, body { background: #f3f3f0; }
    body { min-height: 100vh; }
   .editor { padding: 1rem 0.5rem; max-width: 1000px; margin: 0 auto; }
-    .editor h1 { margin-bottom: 1rem; }
+    .editor h1 { margin-bottom: 3rem; }
     /* center section titles on the editor page but keep the same font-size/height */
     .editor .section-title { text-align: center; }
   /* place the Back button at the top-left corner of the viewport on the editor page */
   .editor > a.btn.btn-primary { position: fixed; top: 3rem; left: 3rem; z-index: 1200; }
-    .upload-area { border: 2px dashed #ccc; padding: 2rem; text-align: center; border-radius: 8px; }
+    /* Hide upload area so only grid, title, and back button are visible */
+    .upload-area { display: none; }
     .upload-area.dragover { border-color: #888; background: rgba(0,0,0,0.02); }
     /* Masonry-like layout using CSS columns (flowed columns behave like bricks) */
     .previews {
@@ -229,15 +230,10 @@
   <main class="editor">
   <a class="btn btn-primary" href="index.html#projects" aria-label="Volver a Work">← Back</a>
   <h1 id="project-title" class="section-title">Project</h1>
-    <p class="note">This is a simple client-side editor to add photos for the selected project. Files are not uploaded to a server — previews are local.</p>
 
     <div class="upload-area" id="uploadArea">
       <p>Drag & drop images here or <label for="fileInput" style="color:blue; text-decoration:underline; cursor:pointer">choose files</label></p>
       <input id="fileInput" type="file" accept="image/*" multiple style="display:none" />
-    </div>
-
-    <div class="controls">
-      <div class="note">You can remove individual previews with the × button.</div>
     </div>
 
     <div class="previews" id="previews">

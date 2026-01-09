@@ -73,8 +73,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 85%;       /* ahora sí puedes usar 90% */
-  max-width: 85vw;
+  width: 90%;       /* increased from 85% to fit the new VS Code icon */
+  max-width: 90vw;
 }
 
 .skill-icon {
