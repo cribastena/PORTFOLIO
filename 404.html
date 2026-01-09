@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>404 - Page Not Found</title>
+  <link rel="stylesheet" href="./assets/css/main.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .error-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .error-code {
+      font-size: clamp(8rem, 20vw, 16rem);
+      font-weight: 900;
+      line-height: 1;
+      margin: 0;
+      background: linear-gradient(135deg, var(--color-accent), var(--color-text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 3s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(20deg); }
+    }
+
+    .error-message {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 600;
+      margin: 1rem 0 0.5rem;
+      color: var(--color-text);
+    }
+
+    .error-description {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--color-text-secondary);
+      margin: 0 0 2.5rem;
+      max-width: 500px;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-404 {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary-404 {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--color-accent);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary-404:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary-404 {
+      background: transparent;
+      color: var(--color-text-secondary);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary-404:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Animated background decoration */
+    .decoration {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--color-accent);
+      opacity: 0.05;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .decoration:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      top: -150px;
+      left: -150px;
+      animation-delay: 0s;
+    }
+
+    .decoration:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      bottom: -100px;
+      right: -100px;
+      animation-delay: 7s;
+    }
+
+    .decoration:nth-child(3) {
+      width: 150px;
+      height: 150px;
+      top: 50%;
+      right: 10%;
+      animation-delay: 14s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+
+    @media (max-width: 768px) {
+      .error-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .btn-404 {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="decoration"></div>
+  <div class="decoration"></div>
+  <div class="decoration"></div>
+
+  <div class="error-container">
+    <h1 class="error-code">404</h1>
+    <h2 class="error-message">Page Not Found</h2>
+    <p class="error-description">
+      Oops! The page you're looking for doesn't exist or has been moved.
+    </p>
+    <div class="error-actions">
+      <a href="index.html" class="btn-404 btn-primary-404">
+        <span>← Go Home</span>
+      </a>
+      <button onclick="history.back()" class="btn-404 btn-secondary-404">
+        <span>Go Back</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>
