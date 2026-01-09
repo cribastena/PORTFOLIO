@@ -84,6 +84,15 @@
     @media (max-width: 420px) {
       .previews { column-count: 1; }
     }
+    /* UX/UI project: prefer a 3x3 layout (9 images) on wide screens.
+       When the viewport narrows, switch to 2 columns (and 1 on very small screens). */
+    .editor.project-ux-ui .previews { column-count: 3; }
+    @media (max-width: 800px) {
+      .editor.project-ux-ui .previews { column-count: 2; }
+    }
+    @media (max-width: 420px) {
+      .editor.project-ux-ui .previews { column-count: 1; }
+    }
     .preview-slot .remove { position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.6); color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer }
     .controls { margin-top:1rem; display:flex; gap:1rem; align-items:center }
     .note { color:#666; font-size:0.95rem }
@@ -202,10 +211,76 @@
   const uploadArea = document.getElementById('uploadArea');
   const previews = document.getElementById('previews');
 
-    // Create a configurable number of empty slots inside .previews on load.
-    // For the 3d project we only need 4 slots; other projects keep a larger default.
+    // Build a small prefill map for known projects. This allows us to
+    // create exactly as many slots as there are prefill URLs when present.
+    const PREFILL = {
+      'posters-covers': [
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4681.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4682.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3400.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2828.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4109.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/ultima%20propuestaCR1.JPEG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2926.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3586.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2307.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2297.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2318.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2855.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0357.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.54.00.png',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4685.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.57.29.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.57.56.png',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2511.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4377%202.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4094%202.PNG'
+      ],
+      'ux-ui': [
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2015.29.47.png'
+      ],
+      '3d': [
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6464%202.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6463%202.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/output%20(1).webm',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6462%202.JPG'
+      ],
+      'illustrations': [
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0494.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2251.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4465.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_9739.heic',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2256.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3585.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4576.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6554.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6561.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6278.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6275.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0211.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2675.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_0170.JPG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_6553.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4979%202.heic',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2502.HEIC',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_2806.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4686.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3795.jpg'
+      ]
+    };
+
+    // Determine prefill URLs for the current project (if any)
+    const prefillUrls = PREFILL[project] || null;
+
+    // Maximum slot counts per project (we'll create slots on-demand for ux-ui
+    // so we don't show empty placeholders). 3d stays at 4; ux-ui limited to 9.
+    const MAX_SLOTS = (project === '3d') ? 4 : (project === 'ux-ui') ? 9 : 20;
+
+    // Create placeholder slots for most projects. For ux-ui we avoid creating
+    // empty placeholder slots up-front so the grid only shows actual images.
     (function createSlots(){
-      const slotCount = (project === '3d') ? 4 : 20;
+      if(project === 'ux-ui') return; // create slots on-demand for ux-ui
+      const slotCount = MAX_SLOTS;
       for(let i=0;i<slotCount;i++){
         const slot = document.createElement('div');
         slot.className = 'preview-slot empty';
@@ -217,8 +292,18 @@
 
     // helper to populate a slot from a remote URL (used to prefill project examples)
     function fillSlotWithURL(url){
-      const slot = Array.from(previews.querySelectorAll('.preview-slot.empty'))[0];
-      if(!slot) return;
+      // find an empty slot; if none exists and we haven't hit MAX_SLOTS,
+      // create a new slot on-demand (this avoids showing empty placeholders
+      // for projects like ux-ui).
+      let slot = Array.from(previews.querySelectorAll('.preview-slot.empty'))[0];
+      if(!slot){
+        const existing = previews.querySelectorAll('.preview-slot').length;
+        if(existing >= MAX_SLOTS) return; // reached capacity
+        slot = document.createElement('div');
+        slot.className = 'preview-slot';
+        slot.dataset.slotIndex = existing;
+        previews.appendChild(slot);
+      }
       // reserve the slot immediately so subsequent calls don't pick the same one
       slot.classList.remove('empty');
       slot.classList.add('loading');
@@ -327,6 +412,21 @@
       ]);
     }
 
+    // if this editor is opened for ux-ui, prefill with UX/UI images (edit the array to add your URLs)
+    if(project === 'ux-ui'){
+      addFromUrls([
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2015.29.47.png',
+        'https://ik.imagekit.io/7zyxg26dj/Frame%201%20(1).png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2013.24.20.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2013.34.48.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2013.33.09.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2013.26.39.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2014.03.29.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2014.01.49.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2014.02.36.png'
+      ]);
+    }
+
     // if this editor is opened for 3d, prefill with the user's 3d image URLs
     if(project === '3d'){
       addFromUrls([
@@ -358,8 +458,10 @@
         'https://ik.imagekit.io/7zyxg26dj/IMG_4979%202.heic',
         'https://ik.imagekit.io/7zyxg26dj/IMG_2502.HEIC',
         'https://ik.imagekit.io/7zyxg26dj/IMG_2806.PNG',
-        'https://ik.imagekit.io/7zyxg26dj/IMG_4995.HEIC',
-        'https://ik.imagekit.io/7zyxg26dj/IMG_3795.jpg'
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4686.PNG',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_3795.jpg',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2013.54.17.png',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4686.PNG'
       ]);
     }
 
