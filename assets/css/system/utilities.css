@@ -100,3 +100,20 @@ img {
 @media (max-width: 420px) {
 	.editor.project-3d .previews { column-count: 1; }
 }
+
+/* Pointer trail dot (site-wide). Hidden when user prefers reduced motion. */
+.pointer-trail-dot{
+	position: fixed;
+	pointer-events: none;
+	border-radius: 50%;
+	/* user-requested green */
+	background: #83c168;
+	transform: translate(-50%,-50%) scale(1);
+	opacity: 1;
+	transition: transform 700ms cubic-bezier(.22,1,.36,1), opacity 700ms linear;
+	z-index: 99999;
+	will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce){
+	.pointer-trail-dot{ display:none !important; }
+}

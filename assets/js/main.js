@@ -319,6 +319,44 @@ function initActiveNav() {
 	sections.forEach((section) => navObserver.observe(section));
 }
 
+/* ------------------------------------------------------------------
+ * Pointer trail (site-wide)
+ * Creates small green dots that follow the pointer and fade out.
+ * Respects prefers-reduced-motion and uses throttling for performance.
+ * ------------------------------------------------------------------ */
+function initPointerTrail(){
+	try{
+		if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		let lastTime = 0;
+		const minInterval = 16; // ~60fps throttle
+		function createDot(x,y){
+			const el = document.createElement('div');
+			el.className = 'pointer-trail-dot';
+			const size = 8 + Math.random()*12; // 8-20px
+			el.style.width = size + 'px';
+			el.style.height = size + 'px';
+			el.style.left = x + 'px';
+			el.style.top = y + 'px';
+			document.body.appendChild(el);
+			requestAnimationFrame(()=>{
+				el.style.transform = 'translate(-50%,-50%) scale(1.6)';
+				el.style.opacity = '0';
+			});
+			setTimeout(()=>{ if(el && el.parentNode) el.parentNode.removeChild(el); }, 800);
+		}
+		function pointerHandler(e){
+			const now = performance.now();
+			if(now - lastTime < minInterval) return;
+			lastTime = now;
+			const x = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+			const y = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+			createDot(x,y);
+		}
+		document.addEventListener('pointermove', pointerHandler, {passive:true});
+		document.addEventListener('touchmove', pointerHandler, {passive:true});
+	}catch(e){ /* ignore */ }
+}
+
 // ==========================================================================
 // 5. INITIALIZATION
 // ==========================================================================
@@ -338,6 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	initScrollAnimations();
 	initSmoothScroll();
 	initActiveNav();
+	initPointerTrail();
 
 	console.log('🚀 Grade 1 Demo: Vanilla scroll animations initialized');
 });
