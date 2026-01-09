@@ -98,6 +98,14 @@
     @media (max-width: 800px) {
       .editor.project-videos-animations .previews { column-count: 2; }
     }
+    /* Branding project: crop only the first image 35% from left and right sides */
+    .editor.project-branding .preview-slot:first-child img {
+      object-fit: cover;
+      object-position: center;
+      width: 170%; /* expand to compensate for crop */
+      margin-left: -35%; /* shift left to center the crop */
+      max-width: 170%;
+    }
     .preview-slot .remove { position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.6); color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer }
     .controls { margin-top:1rem; display:flex; gap:1rem; align-items:center }
     .note { color:#666; font-size:0.95rem }
@@ -323,6 +331,9 @@
         'https://ik.imagekit.io/7zyxg26dj/IMG_2806.PNG',
         'https://ik.imagekit.io/7zyxg26dj/IMG_4686.PNG',
         'https://ik.imagekit.io/7zyxg26dj/IMG_3795.jpg'
+      ],
+      'branding': [
+        'https://ik.imagekit.io/7zyxg26dj/Shot%20(4).png'
       ]
     };
 
@@ -559,6 +570,33 @@
         'https://ik.imagekit.io/7zyxg26dj/IMG_3795.jpg',
         'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2013.54.17.png',
         'https://ik.imagekit.io/7zyxg26dj/IMG_4686.PNG'
+      ]);
+    }
+
+    // if this editor is opened for branding, prefill with the user's branding images
+    if(project === 'branding'){
+      addFromUrls([
+        'https://ik.imagekit.io/7zyxg26dj/Shot%20(4).png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2019.02.18.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2019.01.15.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.38.40.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2019.28.50.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.36.53.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.37.11.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.40.14.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.41.05.png',
+        'https://ik.imagekit.io/7zyxg26dj/IMG_4172.jpg?updatedAt=1767868980669',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.31.39.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.31.27.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.32.09.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2015.29.30.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2015.29.47.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-08%20a%20las%2012.57.29.png?updatedAt=1767873498172',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2019.29.25.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.35.09.png',
+        'https://ik.imagekit.io/7zyxg26dj/Captura%20de%20pantalla%202026-01-09%20a%20las%2018.34.57.png',
+        'https://ik.imagekit.io/7zyxg26dj/Frame%201%20(1).png'
+
       ]);
     }
 
