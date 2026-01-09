@@ -1,8 +1,9 @@
 .nav {
-  /* slightly translucent background so content beneath is visible */
-  background: rgba(246,246,246,0.75); /* slightly more translucent */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  /* Glassmorphism effect for navigation */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   /* nav vertical padding restored to original */
   /* reduce nav height slightly while keeping inner elements vertically centered */
   padding: 0.9rem var(--space-lg);
@@ -10,8 +11,8 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  /* subtle separation from content when overlapping */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  /* subtle shadow for glassmorphism */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .nav-container {
@@ -30,7 +31,7 @@
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 1.54rem; /* 30% smaller (2.2rem * 0.7) */
-  color: var(--color-text);
+  color: #fff; /* White text for glassmorphism background */
 }
 
 .nav-logo:hover {
@@ -46,7 +47,7 @@
 }
 
 .nav-links a {
-  color: var(--color-text);
+  color: #fff; /* White text for glassmorphism background */
   font-size: 1.4rem; /* 30% smaller (2rem * 0.7) */
   font-family: var(--font-sans);
   font-weight: 700;

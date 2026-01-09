@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="./assets/css/main.css">
   <script src="./assets/js/main.js" defer></script>
   <style>
-   /* Ensure editor page has a white background (override site-wide background)
-     Set both html and body to white and ensure body covers the viewport so the
+   /* Ensure editor page has an off-white background (override site-wide background)
+     Set both html and body to off-white and ensure body covers the viewport so the
      site's green root background is not visible at the bottom of the page. */
-   html, body { background: #ffffff; }
+   html, body { background: #f3f3f0; }
    body { min-height: 100vh; }
   .editor { padding: 1rem 0.5rem; max-width: 1000px; margin: 0 auto; }
     .editor h1 { margin-bottom: 1rem; }
@@ -93,6 +93,11 @@
     @media (max-width: 420px) {
       .editor.project-ux-ui .previews { column-count: 1; }
     }
+    /* Videos & Animations project: 3 columns on desktop, 2 columns on narrower viewports */
+    .editor.project-videos-animations .previews { column-count: 3; }
+    @media (max-width: 800px) {
+      .editor.project-videos-animations .previews { column-count: 2; }
+    }
     .preview-slot .remove { position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.6); color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer }
     .controls { margin-top:1rem; display:flex; gap:1rem; align-items:center }
     .note { color:#666; font-size:0.95rem }
@@ -117,12 +122,16 @@
       justify-content: center;
     }
     .modal {
-      background: #fff;
+      /* Glassmorphism effect matching project cards */
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 8px;
       max-width: 92vw;
       max-height: 92vh;
       padding: 1rem;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.28);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -137,27 +146,75 @@
   .modal .modal-media img { max-width: 88vw; max-height: 68vh; width: auto; height: auto; border-radius:6px }
     .modal .modal-actions { display:flex; gap:0.5rem; justify-content:center; width:100% }
     .modal .btn { min-width: 7rem }
-    /* Remove shadow and interactive transforms on the modal's Close button, but keep
-       the .btn-primary palette by not overriding background-color or color. This
-       neutralizes effects while preserving the project's primary color. */
+    /* Glassmorphism effect for modal Close button with transparent background and white text */
     #modal-close-btn {
-      box-shadow: none !important;
-      background-image: none !important;
-      border: none !important;
-      transition: none !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #fff !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+      transition: all 0.3s ease !important;
       transform: none !important;
     }
-    /* Keep the same visible color on hover/active/focus, but neutralize effects.
-       We still provide a subtle focus outline for accessibility. */
+    /* Subtle hover effect for glassmorphism close button */
     #modal-close-btn:hover,
     #modal-close-btn:active,
     #modal-close-btn:focus {
-      box-shadow: none !important;
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
       transform: none !important;
-      transition: none !important;
       outline: 3px solid rgba(255,255,255,0.08);
       outline-offset: 2px;
     }
+    /* Unmute control shown when autoplay-with-sound is blocked */
+    .preview-slot .unmute {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: none;
+      z-index: 8;
+    }
+    .preview-slot.show-unmute .unmute { display: inline-flex; align-items: center; gap:6px }
+    /* modal-level unmute icon styling with glassmorphism matching close button */
+    /* Transparent background with white icon, maintaining the same visual rhythm */
+    .modal-unmute {
+      /* match the close button's vertical rhythm while reducing side padding */
+      padding: var(--space-sm) calc(var(--space-md) * 0.4);
+      height: auto;
+      min-height: 40px; /* aligns with the close button's perceived height */
+      border-radius: 28px; /* same rounded pill shape as .btn */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      /* Glassmorphism effect matching close button */
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #fff !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+      margin-right: 0.25rem;
+      transition: all 0.3s ease !important;
+      transform: none !important;
+    }
+    .modal-unmute svg { display: block; width: 24px; height: 24px; fill: #fff; }
+    /* Subtle hover effect matching close button */
+    .modal-unmute:hover,
+    .modal-unmute:active { 
+      background: rgba(255, 255, 255, 0.15) !important; 
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important; 
+      transform: none !important; 
+    }
+    .modal-unmute:focus { outline: 3px solid rgba(255,255,255,0.08); outline-offset: 2px; }
   </style>
 </head>
 <body>
@@ -273,13 +330,13 @@
     const prefillUrls = PREFILL[project] || null;
 
     // Maximum slot counts per project (we'll create slots on-demand for ux-ui
-    // so we don't show empty placeholders). 3d stays at 4; ux-ui limited to 9.
-    const MAX_SLOTS = (project === '3d') ? 4 : (project === 'ux-ui') ? 9 : 20;
+    // and videos-animations so we don't show empty placeholders). 3d stays at 4; ux-ui limited to 9; videos-animations limited to 5.
+    const MAX_SLOTS = (project === '3d') ? 4 : (project === 'ux-ui') ? 9 : (project === 'videos-animations') ? 5 : 20;
 
-    // Create placeholder slots for most projects. For ux-ui we avoid creating
-    // empty placeholder slots up-front so the grid only shows actual images.
+    // Create placeholder slots for most projects. For ux-ui and videos-animations we avoid creating
+    // empty placeholder slots up-front so the grid only shows actual media.
     (function createSlots(){
-      if(project === 'ux-ui') return; // create slots on-demand for ux-ui
+      if(project === 'ux-ui' || project === 'videos-animations') return; // create slots on-demand for ux-ui and videos-animations
       const slotCount = MAX_SLOTS;
       for(let i=0;i<slotCount;i++){
         const slot = document.createElement('div');
@@ -321,31 +378,60 @@
         slot.innerHTML = '<span class="placeholder">+</span>';
       });
       if(isVideo){
-        // configure video preview: autoplay muted loop for instant, lightweight preview
+        // For previews: always show the video muted so it's visible as an
+        // animated preview. Sound will be activated only inside the modal
+        // via an explicit user action.
         mediaEl.muted = true;
         mediaEl.loop = true;
         mediaEl.playsInline = true;
         mediaEl.autoplay = true;
-        mediaEl.preload = 'metadata';
+        mediaEl.preload = 'auto'; // Load video eagerly for faster preview display
         mediaEl.style.width = '100%';
         mediaEl.style.height = 'auto';
-        // when the video has enough data to play, insert it
-        mediaEl.addEventListener('loadeddata', () => {
+
+        // Robust insertion: listen for several ready events and use a short fallback
+        // timer so the preview appears quickly in the grid.
+        let inserted = false;
+        function insertVideoPreview(){
+          if(inserted) return;
+          inserted = true;
           slot.innerHTML = '';
           slot.appendChild(remove);
-          // make video interactive: clickable and keyboard accessible
+          // clickable / keyboard access
           mediaEl.style.cursor = 'pointer';
           mediaEl.tabIndex = 0;
           mediaEl.addEventListener('click', () => openImageModal(mediaEl));
           mediaEl.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openImageModal(mediaEl); } });
           slot.appendChild(mediaEl);
           slot.classList.remove('loading');
-          // try to play (some browsers require play() after user gesture; muted autoplay usually works)
-          const p = mediaEl.play(); if(p && p.catch) p.catch(() => {/* ignore autoplay rejection */});
-        });
+          // play muted preview; swallow promise rejection
+          const p = mediaEl.play(); if(p && p.catch) p.catch(() => {});
+          // cleanup listeners
+          mediaEl.removeEventListener('loadstart', insertVideoPreview);
+          mediaEl.removeEventListener('loadeddata', insertVideoPreview);
+          mediaEl.removeEventListener('loadedmetadata', insertVideoPreview);
+          mediaEl.removeEventListener('canplay', insertVideoPreview);
+          clearTimeout(fallbackTimer);
+        }
+
+        // Listen to loadstart (fires earliest) plus other ready events
+        mediaEl.addEventListener('loadstart', insertVideoPreview);
+        mediaEl.addEventListener('loadeddata', insertVideoPreview);
+        mediaEl.addEventListener('loadedmetadata', insertVideoPreview);
+        mediaEl.addEventListener('canplay', insertVideoPreview);
+
+        const fallbackTimer = setTimeout(() => { if(!inserted) insertVideoPreview(); }, 500);
+
         mediaEl.onerror = () => {
-          slot.innerHTML = '<span class="placeholder">⚠</span>';
-          slot.classList.remove('loading');
+          if(!inserted){
+            slot.innerHTML = '<span class="placeholder">⚠</span>';
+            slot.classList.remove('loading');
+            mediaEl.removeEventListener('loadstart', insertVideoPreview);
+            mediaEl.removeEventListener('loadeddata', insertVideoPreview);
+            mediaEl.removeEventListener('loadedmetadata', insertVideoPreview);
+            mediaEl.removeEventListener('canplay', insertVideoPreview);
+            clearTimeout(fallbackTimer);
+          }
         };
         mediaEl.src = url;
       } else {
@@ -437,6 +523,17 @@
       ]);
     }
 
+    // if this editor is opened for videos & animations, prefill with the provided webm(s)
+    if(project === 'videos-animations'){
+      addFromUrls([
+        'https://ik.imagekit.io/7zyxg26dj/output%20(2).webm',
+        'https://ik.imagekit.io/7zyxg26dj/output.webm/ik-video.mp4?updatedAt=1767713032606'
+        , 'https://ik.imagekit.io/7zyxg26dj/output%20(3).webm'
+        , 'https://ik.imagekit.io/7zyxg26dj/output%20(4).webm'
+        , 'https://ik.imagekit.io/7zyxg26dj/output%20(5).webm'
+      ]);
+    }
+
     // if this editor is opened for illustrations, prefill with the user's images
     if(project === 'illustrations'){
       addFromUrls([
@@ -485,14 +582,46 @@
     clone.style.maxHeight = '68vh';
     clone.style.width = 'auto';
     clone.style.height = 'auto';
-    // if this is a video element, ensure it plays/loops in the modal
+    // if this is a video element, ensure it plays/loops in the modal and
+    // provide an explicit control inside the modal to activate sound.
     if(clone.tagName && clone.tagName.toLowerCase() === 'video'){
+      // keep the modal video muted initially; user must explicitly enable audio
       clone.muted = true;
       clone.loop = true;
       clone.playsInline = true;
       clone.autoplay = true;
-      // try to play; swallow promise rejection
+      // try to play (muted autoplay should succeed); swallow promise rejection
       const p = clone.play(); if(p && p.catch) p.catch(() => {});
+
+      // create a modal-level unmute icon button so sound only plays after user action
+      const modalActions = imageModal.querySelector('.modal-actions');
+      if(modalActions){
+        // remove any previous modal-unmute button
+        const prev = modalActions.querySelector('.modal-unmute'); if(prev) prev.remove();
+        const modalUnmute = document.createElement('button');
+        modalUnmute.type = 'button';
+        // use .btn so color variables apply; .modal-unmute styles it as a small circular icon
+        modalUnmute.className = 'btn modal-unmute';
+        modalUnmute.setAttribute('aria-label','Activar sonido');
+        modalUnmute.title = 'Activar sonido';
+        // inline SVG speaker icon (simple, accessible)
+        modalUnmute.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M5 9v6h4l5 4V5L9 9H5z" fill="currentColor" />
+            <path d="M16.5 8.5a4.5 4.5 0 010 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          </svg>`;
+        modalUnmute.addEventListener('click', (e) => {
+          e.stopPropagation();
+          try {
+            clone.muted = false;
+            const pp = clone.play(); if(pp && pp.catch) pp.catch(() => {});
+            // hide the unmute control after activation
+            modalUnmute.style.display = 'none';
+          } catch (err) { console.warn('modal unmute failed', err); }
+        });
+        // insert before the close button so it is visible inside modal-actions
+        modalActions.insertBefore(modalUnmute, modalActions.firstChild);
+      }
     }
     modalMedia.appendChild(clone);
     imageModal.hidden = false;
@@ -507,6 +636,8 @@
     // if there's a video playing in the modal, pause it and release the src
     const v = modalMedia.querySelector('video');
     if(v){ try{ v.pause(); v.removeAttribute('src'); }catch(e){} }
+    // remove any modal-level unmute control
+    const modalUn = imageModal.querySelector('.modal-unmute'); if(modalUn) modalUn.remove();
     // remove cloned media immediately, then hide overlay
     modalMedia.innerHTML = '';
     imageModal.hidden = true;

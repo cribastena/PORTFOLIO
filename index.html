@@ -136,11 +136,8 @@
 					<article class="project-card">
 						<a class="project-link" href="project-editor.html?project=branding" aria-label="Open BRANDING project">
 						  <div class="project-image">
-							  <!-- Use animated WebP where supported (smaller), fallback to resized GIF -->
-							  <picture>
-								  <source type="image/webp" srcset="https://ik.imagekit.io/7zyxg26dj/Soda%20Can%20With%20Different%20Label%203D%20Animated%20Mockup.GIF?tr=f-webp,q-70,w-800">
-								  <img src="https://ik.imagekit.io/7zyxg26dj/Soda%20Can%20With%20Different%20Label%203D%20Animated%20Mockup.GIF?tr=w-800,q-70" alt="Branding animation" loading="eager" width="400" height="300" />
-							  </picture>
+							  <!-- Use original GIF without transformations to preserve animation speed -->
+							  <img src="https://ik.imagekit.io/7zyxg26dj/Soda%20Can%20With%20Different%20Label%203D%20Animated%20Mockup.GIF" alt="Branding animation" loading="eager" width="400" height="300" />
 						  </div>
 						  <div class="project-content">
 							  <h3 class="project-title">BRANDING</h3>
@@ -154,8 +151,8 @@
 					<article class="project-card">
 						<a class="project-link" href="project-editor.html?project=videos-animations" aria-label="Open VIDEOS & ANIMATIONS project">
 						  <div class="project-image">
-							  <!-- Inline MP4 for Videos & Animations: autoplay, loop, muted, playsinline -->
-							  <video class="project-video" autoplay loop muted playsinline preload="auto" width="400" height="300">
+							  <!-- Inline video for Videos & Animations: autoplay, loop, muted, playsinline with poster -->
+							  <video class="project-video" autoplay loop muted playsinline preload="metadata" poster="https://ik.imagekit.io/7zyxg26dj/IMG_4683.jpg" width="400" height="300">
 								  <source src="https://ik.imagekit.io/7zyxg26dj/output.webm" type="video/webm">
 								  <source src="https://ik.imagekit.io/7zyxg26dj/video%20animacio%CC%81n.mp4?updatedAt=1767702851452" type="video/mp4">
 								  <!-- Fallback image if video can't play -->
@@ -250,8 +247,23 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.project-video').forEach(function(v){
-    // try to autoplay muted videos; if blocked, silently ignore (no UI overlay)
-    v.play().catch(function(){ /* autoplay blocked - no overlay by design */ });
+    // Load and play video as soon as possible
+    function tryPlay() {
+      v.play().catch(function(){ /* autoplay blocked - no overlay by design */ });
+    }
+    
+    // Try to play immediately if video is ready
+    if (v.readyState >= 3) { // HAVE_FUTURE_DATA or better
+      tryPlay();
+    } else {
+      // Listen for early load events to start playback ASAP
+      v.addEventListener('loadstart', tryPlay, { once: true });
+      v.addEventListener('loadeddata', tryPlay, { once: true });
+      v.addEventListener('canplay', tryPlay, { once: true });
+    }
+    
+    // Force load to start
+    v.load();
   });
 });
 </script>
