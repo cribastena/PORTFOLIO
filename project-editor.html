@@ -20,7 +20,7 @@
     /* Reduce title size on mobile so longer titles fit on screen */
     @media (max-width: 640px) {
       .editor .section-title { 
-        font-size: 4rem; 
+        font-size: 5rem; /* igual que títulos de 1 palabra */
         text-align: center;
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -33,12 +33,12 @@
       .editor.project-ux-ui .section-title {
         word-spacing: normal;
       }
-      /* Extra reduction for longer titles like "videos & animations" */
-      .editor.project-videos-animations .section-title { font-size: 3rem; }
+      /* Extra reduction for longer titles like "videos & animations" (3 palabras) */
+      .editor.project-videos-animations .section-title { font-size: 3.5rem; }
     }
     @media (max-width: 480px) {
       .editor .section-title { 
-        font-size: 3rem;
+        font-size: 4rem; /* igual que títulos de 1 palabra */
         padding: 0 0.5rem;
         margin-top: 3.5rem;
         word-spacing: 9999px; /* fuerza salto de línea entre palabras */
@@ -48,11 +48,11 @@
       .editor.project-ux-ui .section-title {
         word-spacing: normal;
       }
-      .editor.project-videos-animations .section-title { font-size: 2.2rem; }
+      .editor.project-videos-animations .section-title { font-size: 2.8rem; }
     }
     @media (max-width: 380px) {
       .editor .section-title { 
-        font-size: 2.5rem;
+        font-size: 3.5rem; /* igual que títulos de 1 palabra */
         margin-top: 3rem;
         word-spacing: 9999px; /* fuerza salto de línea entre palabras */
         line-height: 1;
@@ -61,7 +61,7 @@
       .editor.project-ux-ui .section-title {
         word-spacing: normal;
       }
-      .editor.project-videos-animations .section-title { font-size: 1.8rem; }
+      .editor.project-videos-animations .section-title { font-size: 2.4rem; }
     }
   /* place the Back button at the top-left corner of the viewport on the editor page */
   .editor > a.btn.btn-primary { position: fixed; top: 3rem; left: 3rem; z-index: 1200; }
@@ -108,7 +108,25 @@
   /* make images responsive and keep natural aspect ratio so the grid adapts to image height */
   .preview-slot img { width: 100%; height: auto; display: block; }
   /* make videos responsive like images */
-  .preview-slot video { width: 100%; height: auto; display: block; }
+  .preview-slot video { 
+    width: 100%; 
+    height: auto; 
+    display: block;
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Ensure videos are visible on mobile in project editor */
+  @media (max-width: 640px) {
+    .preview-slot video {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: 100%;
+      height: auto;
+    }
+  }
+  
   .preview-slot .placeholder { font-size: 2rem; color: #bbb; }
     /* Microinteraction: stronger, immediate hover for pointer devices */
     @media (hover: hover) and (pointer: fine) {
