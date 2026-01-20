@@ -25,6 +25,13 @@
         word-wrap: break-word;
         overflow-wrap: break-word;
         padding: 0 1rem;
+        margin-top: 4rem; /* mucho margen superior en móvil */
+        word-spacing: 9999px; /* fuerza salto de línea entre palabras */
+        line-height: 1;
+      }
+      /* Exception: keep "ux ui" on one line */
+      .editor.project-ux-ui .section-title {
+        word-spacing: normal;
       }
       /* Extra reduction for longer titles like "videos & animations" */
       .editor.project-videos-animations .section-title { font-size: 3rem; }
@@ -33,11 +40,27 @@
       .editor .section-title { 
         font-size: 3rem;
         padding: 0 0.5rem;
+        margin-top: 3.5rem;
+        word-spacing: 9999px; /* fuerza salto de línea entre palabras */
+        line-height: 1;
+      }
+      /* Exception: keep "ux ui" on one line */
+      .editor.project-ux-ui .section-title {
+        word-spacing: normal;
       }
       .editor.project-videos-animations .section-title { font-size: 2.2rem; }
     }
     @media (max-width: 380px) {
-      .editor .section-title { font-size: 2.5rem; }
+      .editor .section-title { 
+        font-size: 2.5rem;
+        margin-top: 3rem;
+        word-spacing: 9999px; /* fuerza salto de línea entre palabras */
+        line-height: 1;
+      }
+      /* Exception: keep "ux ui" on one line */
+      .editor.project-ux-ui .section-title {
+        word-spacing: normal;
+      }
       .editor.project-videos-animations .section-title { font-size: 1.8rem; }
     }
   /* place the Back button at the top-left corner of the viewport on the editor page */
@@ -45,10 +68,10 @@
   
   /* Adjust Back button position on mobile - move it higher and more to the left */
   @media (max-width: 640px) {
-    .editor > a.btn.btn-primary { top: 1.5rem; left: 1rem; }
+    .editor > a.btn.btn-primary { top: 1.5rem; left: 1.5rem; }
   }
   @media (max-width: 480px) {
-    .editor > a.btn.btn-primary { top: 1rem; left: 0.75rem; }
+    .editor > a.btn.btn-primary { top: 1rem; left: 1.25rem; }
   }
     /* Hide upload area so only grid, title, and back button are visible */
     .upload-area { display: none; }
