@@ -470,9 +470,13 @@
         mediaEl.loop = true;
         mediaEl.playsInline = true;
         mediaEl.autoplay = true;
+        mediaEl.setAttribute('playsinline', ''); // iOS Safari requires the attribute
+        mediaEl.setAttribute('muted', ''); // Ensure muted attribute is set
+        mediaEl.setAttribute('autoplay', ''); // Ensure autoplay attribute is set
         mediaEl.preload = 'auto'; // Load video eagerly for faster preview display
         mediaEl.style.width = '100%';
         mediaEl.style.height = 'auto';
+        mediaEl.style.display = 'block';
 
         // Robust insertion: listen for several ready events and use a short fallback
         // timer so the preview appears quickly in the grid.
@@ -489,8 +493,14 @@
           mediaEl.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openImageModal(mediaEl); } });
           slot.appendChild(mediaEl);
           slot.classList.remove('loading');
-          // play muted preview; swallow promise rejection
-          const p = mediaEl.play(); if(p && p.catch) p.catch(() => {});
+          // play muted preview; swallow promise rejection and try multiple times
+          setTimeout(() => {
+            const p = mediaEl.play(); 
+            if(p && p.catch) p.catch(() => {
+              // If first play fails, try again after a short delay
+              setTimeout(() => { mediaEl.play().catch(() => {}); }, 100);
+            });
+          }, 50);
           // cleanup listeners
           mediaEl.removeEventListener('loadstart', insertVideoPreview);
           mediaEl.removeEventListener('loadeddata', insertVideoPreview);
