@@ -83,10 +83,31 @@ img {
 	.editor .previews { column-count: 3; }
 }
 @media (max-width: 800px) {
-	.editor .previews { column-count: 2; }
+	.editor .previews { column-count: 2; column-gap: 0.75rem; }
+}
+@media (max-width: 640px) {
+	.editor .previews { 
+		column-count: 2; 
+		column-gap: 0.6rem; 
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+	.editor .preview-slot { 
+		margin-bottom: 0.6rem; 
+		border-radius: 4px;
+	}
 }
 @media (max-width: 420px) {
-	.editor .previews { column-count: 1; }
+	.editor .previews { 
+		column-count: 2; /* mantener 2 columnas en móvil pequeño */
+		column-gap: 0.5rem;
+		padding-left: 1.25rem;
+		padding-right: 1.25rem;
+	}
+	.editor .preview-slot { 
+		margin-bottom: 0.5rem; 
+		border-radius: 3px;
+	}
 }
 
 /* Specific 2x2 layout for the 3D project editor: force two columns on desktop
@@ -95,10 +116,23 @@ img {
 	column-count: 2;
 }
 @media (max-width: 800px) {
-	.editor.project-3d .previews { column-count: 2; }
+	.editor.project-3d .previews { column-count: 2; column-gap: 0.75rem; }
+}
+@media (max-width: 640px) {
+	.editor.project-3d .previews { 
+		column-count: 2; 
+		column-gap: 0.6rem;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
 }
 @media (max-width: 420px) {
-	.editor.project-3d .previews { column-count: 1; }
+	.editor.project-3d .previews { 
+		column-count: 2; /* mantener 2 columnas para ver el grid 2x2 */
+		column-gap: 0.5rem;
+		padding-left: 1.25rem;
+		padding-right: 1.25rem;
+	}
 }
 
 /* Pointer trail dot (site-wide). Hidden when user prefers reduced motion. */

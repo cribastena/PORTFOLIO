@@ -1,6 +1,7 @@
 .projects-grid {
 	display: grid;
 	gap: var(--space-lg);
+	grid-template-columns: repeat(2, 1fr); /* 2 columnas por defecto en móvil */
 }
 
 /* Background for the projects section */
@@ -50,9 +51,17 @@
 	z-index: 1;
 }
 
+/* Reduce gap on mobile for 2-column layout */
+@media (max-width: 639px) {
+	.projects-grid {
+		gap: var(--space-md); /* menos espacio entre tarjetas en móvil */
+	}
+}
+
 @media (min-width: 640px) {
 	.projects-grid {
 		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-lg);
 	}
 }
 

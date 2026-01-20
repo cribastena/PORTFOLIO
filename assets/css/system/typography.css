@@ -7,9 +7,24 @@ h1 {
   font-family: var(--font-headings, sans-serif);
   font-size: 9rem;
   font-weight: 500;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg); /* aumentado de --space-sm a --space-lg */
   letter-spacing: -0.02em;
+  line-height: 1.1;
+}
 
+/* Reduce line-height for section titles on mobile */
+@media (max-width: 640px) {
+  h1 {
+    line-height: 0.7; /* más compacto entre líneas */
+    margin-bottom: var(--space-xl); /* aún más margen abajo en móvil */
+  }
+}
+
+@media (max-width: 420px) {
+  h1 {
+    line-height: 0.65; /* aún más compacto */
+    margin-bottom: var(--space-2xl); /* máximo margen en pantallas pequeñas */
+  }
 }
 
 h2 {

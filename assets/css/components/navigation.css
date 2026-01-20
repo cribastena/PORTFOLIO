@@ -73,10 +73,14 @@
   .nav {
     padding: 0.7rem var(--space-md);
   }
-}
-
-@media (max-width: 640px) {
+  
+  /* Keep nav links visible on mobile but make them smaller */
   .nav-links {
-    display: none;
+    gap: var(--space-sm); /* reduce spacing between links */
+    font-size: 1rem; /* reduce overall size */
+  }
+  
+  .nav-links a {
+    font-size: 0.9rem; /* smaller link text on mobile */
   }
 }

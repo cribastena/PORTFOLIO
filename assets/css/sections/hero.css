@@ -89,3 +89,31 @@
   text-align: center;
   line-height: 0;
 }
+
+/* Increase "canco" label size on mobile */
+@media (max-width: 640px) {
+  .hero-label {
+    font-size: 10vw;
+  }
+}
+
+/* Further increase on very small screens */
+@media (max-width: 420px) {
+  .hero-label {
+    font-size: 12vw;
+  }
+}
+
+/* Reduce hero height on mobile */
+@media (max-width: 640px) {
+  .hero {
+    min-height: clamp(40vh, 60vh, 70vh);
+  }
+}
+
+/* Further reduce on very small screens */
+@media (max-width: 420px) {
+  .hero {
+    min-height: clamp(35vh, 55vh, 65vh);
+  }
+}

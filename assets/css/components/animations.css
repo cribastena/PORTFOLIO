@@ -82,6 +82,20 @@
   margin: 0;
 }
 
+/* Reduce logo size on mobile for better readability */
+@media (max-width: 640px) {
+  .hero-logo {
+    font-size: clamp(12rem, 35vw, 20rem);
+  }
+}
+
+/* Further reduce on very small screens */
+@media (max-width: 420px) {
+  .hero-logo {
+    font-size: clamp(8rem, 30vw, 14rem);
+  }
+}
+
 .hero-logo-container .hero-logo:nth-child(2) {
   margin-left: 0rem; /* pequeño espacio entre repeticiones */
 }
@@ -112,4 +126,20 @@
     color: var(--color-text);
   text-align: center;
   line-height: 1;
+}
+
+/* Increase "canco" label size on mobile */
+@media (max-width: 640px) {
+  .hero-label {
+    font-size: 12vw;
+    bottom: 120%; /* mucha más separación del texto animado en móvil */
+  }
+}
+
+/* Further increase on very small screens */
+@media (max-width: 420px) {
+  .hero-label {
+    font-size: 14vw;
+    bottom: 130%; /* separación máxima en pantallas pequeñas */
+  }
 }

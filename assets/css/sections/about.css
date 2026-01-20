@@ -119,18 +119,28 @@
 
 @media (max-width: 480px) {
   .skills-track {
-    gap: 1rem;
+    flex-wrap: wrap; /* permite que los iconos pasen a la siguiente fila */
     justify-content: center;
+    gap: 0.8rem; /* poco margen entre iconos */
+    width: 95%; /* usa casi todo el ancho disponible */
+    max-width: 95vw;
   }
+  
+  .skill-icon {
+    flex-basis: calc(25% - 0.8rem); /* 4 iconos por fila (25% cada uno) */
+    max-width: calc(25% - 0.8rem);
+  }
+  
   .skill-icon svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
   }
 
   .skill-icon img {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
   }
+}
 
 /* Increase the 'Fotografía' (Cinema 4D) icon by 15% and center it horizontally within its cell */
 .skills-track .skill-icon[title="Fotografía"] img {
@@ -202,5 +212,4 @@
     width: 40px;
     height: 40px;
   }
-}
 }
