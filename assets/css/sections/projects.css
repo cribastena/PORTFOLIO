@@ -1,7 +1,7 @@
 .projects-grid {
 	display: grid;
 	gap: var(--space-lg);
-	grid-template-columns: repeat(2, 1fr); /* 2 columnas por defecto en móvil */
+	grid-template-columns: 1fr; /* 1 columna por defecto en móvil */
 }
 
 /* Background for the projects section */

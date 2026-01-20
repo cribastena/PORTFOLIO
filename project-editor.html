@@ -16,8 +16,40 @@
     .editor h1 { margin-bottom: 3rem; }
     /* center section titles on the editor page but keep the same font-size/height */
     .editor .section-title { text-align: center; }
+    
+    /* Reduce title size on mobile so longer titles fit on screen */
+    @media (max-width: 640px) {
+      .editor .section-title { 
+        font-size: 4rem; 
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 0 1rem;
+      }
+      /* Extra reduction for longer titles like "videos & animations" */
+      .editor.project-videos-animations .section-title { font-size: 3rem; }
+    }
+    @media (max-width: 480px) {
+      .editor .section-title { 
+        font-size: 3rem;
+        padding: 0 0.5rem;
+      }
+      .editor.project-videos-animations .section-title { font-size: 2.2rem; }
+    }
+    @media (max-width: 380px) {
+      .editor .section-title { font-size: 2.5rem; }
+      .editor.project-videos-animations .section-title { font-size: 1.8rem; }
+    }
   /* place the Back button at the top-left corner of the viewport on the editor page */
   .editor > a.btn.btn-primary { position: fixed; top: 3rem; left: 3rem; z-index: 1200; }
+  
+  /* Adjust Back button position on mobile - move it higher and more to the left */
+  @media (max-width: 640px) {
+    .editor > a.btn.btn-primary { top: 1.5rem; left: 1rem; }
+  }
+  @media (max-width: 480px) {
+    .editor > a.btn.btn-primary { top: 1rem; left: 0.75rem; }
+  }
     /* Hide upload area so only grid, title, and back button are visible */
     .upload-area { display: none; }
     .upload-area.dragover { border-color: #888; background: rgba(0,0,0,0.02); }
@@ -52,11 +84,14 @@
     .preview-slot.loading { opacity: 0.7; }
   /* make images responsive and keep natural aspect ratio so the grid adapts to image height */
   .preview-slot img { width: 100%; height: auto; display: block; }
+  /* make videos responsive like images */
+  .preview-slot video { width: 100%; height: auto; display: block; }
   .preview-slot .placeholder { font-size: 2rem; color: #bbb; }
     /* Microinteraction: stronger, immediate hover for pointer devices */
     @media (hover: hover) and (pointer: fine) {
       /* Base image transition: short, snappy */
-      .preview-slot img {
+      .preview-slot img,
+      .preview-slot video {
         transition: transform 100ms cubic-bezier(.22,1,.36,1), box-shadow 120ms ease;
         will-change: transform, box-shadow;
         transform-origin: center center;
@@ -66,13 +101,11 @@
       .preview-slot:hover { z-index: 6; }
 
       /* On hover: slight lift + scale and a deeper shadow. No delay so starts immediately. */
-      .preview-slot:hover img {
+      .preview-slot:hover img,
+      .preview-slot:hover video {
         transform: translateY(-4px) scale(1.08);
         box-shadow: 0 18px 36px rgba(0,0,0,0.18);
       }
-
-      /* Keep the remove control stable while the image lifts */
-      .preview-slot .remove { transition: opacity 120ms ease, transform 120ms ease; }
     }
     
     /* Responsive column counts */
@@ -99,6 +132,9 @@
     @media (max-width: 800px) {
       .editor.project-videos-animations .previews { column-count: 2; }
     }
+    @media (max-width: 420px) {
+      .editor.project-videos-animations .previews { column-count: 1; }
+    }
     /* Branding project: crop only the first image 35% from left and right sides */
     .editor.project-branding .preview-slot:first-child img {
       object-fit: cover;
@@ -107,7 +143,8 @@
       margin-left: -35%; /* shift left to center the crop */
       max-width: 170%;
     }
-    .preview-slot .remove { position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.6); color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer }
+    /* Hide remove buttons - gallery is view-only */
+    .preview-slot .remove { display: none !important; }
     .controls { margin-top:1rem; display:flex; gap:1rem; align-items:center }
     .note { color:#666; font-size:0.95rem }
     /* Modal overlay & dialog for image preview */
